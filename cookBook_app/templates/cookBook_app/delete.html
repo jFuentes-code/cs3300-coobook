@@ -1,0 +1,19 @@
+<!--Inheret from base template-->
+{% extends 'cookBook_app/base_template.html' %}
+
+
+{% block content %}
+<!--prompt user for verification using the project they wish to delete-->
+<p> Are you sure you want to delete "{{item}}"?</p>
+
+<!--create a form the uses POST and references the url-->
+<form action = "" method='POST'>
+    <!--give csrf token to validate the user-->
+    {% csrf_token %}
+    <!--If cancel is clicked return to the portfolio view-->
+    <a href="{% url 'recipes' %}"> Cancel</a>
+    <!--if submit is clicked then continue with deletion-->
+    <input type = "submit" name="Confirm">
+</form>
+
+{% endblock %}

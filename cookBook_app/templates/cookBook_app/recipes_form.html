@@ -1,0 +1,22 @@
+<!-- inherit from base.html -->
+{% extends 'cookBook_app/base_template.html' %}
+
+
+<!-- Replace block content in base_template.html -->
+{% block content %}
+
+
+<form action="" method="POST">
+
+<!--create a csrf token to ensure security while submitting form to verify the form came from our website-->
+{% csrf_token %}
+<!--create the form from the dictionary in updatePortfolio in views.py-->
+<table>
+{{ form.as_table }}
+</table>
+<!--submit button to submit updates-->
+<input type="submit" name="Submit">
+</form>
+
+
+{% endblock %}

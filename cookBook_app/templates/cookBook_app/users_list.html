@@ -1,0 +1,22 @@
+<!-- inherit from base.html-->
+{% extends 'cookBook_app/base_template.html' %}
+
+
+{% block content %}
+<!--check if the database has entries for this model then iterate through them using for loop-->
+<h1>User List</h1>
+{% if users_list %}
+<ul>
+    
+{% for user in users_list %}
+<!--list the title of each portfolio as a link to their detail page-->
+<li>
+<a href="{{ user.get_absolute_url }}">{{ user.name }}</a>
+</li>
+{% endfor %}
+</ul>
+<!--else display this error message-->
+{% else %}
+<p>There are no portfolios registered.</p>
+{% endif %}
+{% endblock %}
