@@ -17,7 +17,7 @@ class UsersDetailView(generic.DetailView):
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get the context for the current portfolio
         context = super(UsersDetailView, self).get_context_data(**kwargs)
-        # Get projects that use the current portfolio and add it to the context
+        # Get recipes that use the current User and add it to the context
         context['recipes'] = Recipes.objects.filter(user=context['users'])
         return context
 
@@ -43,7 +43,7 @@ def createRecipe(request, user_id):
             recipe.user = user
             recipe.save()
 
-            # Redirect back to the portfolio detail page
+            # Redirect back to the user detail page
             return redirect('user-detail', user_id)
 
     context = {'form': form}
@@ -81,8 +81,7 @@ def updateRecipe(request, user_id, id):
 
 #method to delete a recipe for a user
 def deleteRecipe(request, user_id, id):
-    #sets user based on user id of recipe in url
-    user = Users.objects.get(pk=user_id)
+
     #sets the recipe based on the id from the url
     recipe = Recipes.objects.get(id = id)
 

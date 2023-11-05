@@ -9,7 +9,7 @@
 <ul>
     
 {% for user in users_list %}
-<!--list the title of each portfolio as a link to their detail page-->
+<!--list the name of each user as a link to their detail page-->
 <li>
 <a href="{{ user.get_absolute_url }}">{{ user.name }}</a>
 </li>
