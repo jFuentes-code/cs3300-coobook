@@ -9,6 +9,18 @@ def index(request):
     # Render index.html
     return render( request, 'cookBook_app/index.html')
 
+#View that renders the login html for the login request
+def loginPage(request):
+    context = {}
+    return render(request, 'cookBook_app/login.html', context)
+
+
+#View that renders the register html for the register request
+def registerPage(request):
+    context = {}
+    return render(request, 'cookBook_app/register.html', context)
+
+
 class UsersListView(generic.ListView):
     model = Users
 class UsersDetailView(generic.DetailView):
