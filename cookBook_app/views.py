@@ -3,6 +3,9 @@ from django.http import HttpResponse
 from .models import *
 from django.views import generic
 from .forms import *
+from django.contrib import messages
+
+
 # Create your views here.
 def index(request):
 
@@ -17,8 +20,23 @@ def loginPage(request):
 
 #View that renders the register html for the register request
 def registerPage(request):
-    context = {}
-    return render(request, 'cookBook_app/register.html', context)
+    form = CreateUserForm()
+
+    if request.method == 'POST':
+        form = CreateUserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            #group = Group.objects.get(name = 'student')
+            #user.groups.add(group)
+            #cook = Users.objects.create(user)
+            #cook.save()
+
+            messages.success(request, 'Account was created for ' + username)
+            return redirect('login')
+
+    context = {'form':form}
+    return render(request, 'registration/register.html', context)
 
 
 class UsersListView(generic.ListView):

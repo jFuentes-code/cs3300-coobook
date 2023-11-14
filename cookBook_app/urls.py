@@ -1,5 +1,6 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
+
 
 
 urlpatterns = [
@@ -24,8 +25,11 @@ path('users/<int:user_id>/update_recipe/<int:id>', views.updateRecipe, name='upd
 path('users/<int:user_id>/delete_recipe/<int:id>', views.deleteRecipe, name='delete_recipe'),
 
 #login/registration urls
-path('login/', views.loginPage, name = "login"),
-path('register/', views.registerPage, name = "register"),
+path('accounts/', include('django.contrib.auth.urls')),
+
+path('accounts/register/', views.registerPage, name = "register_page"),
+
+
 
 
 ]
