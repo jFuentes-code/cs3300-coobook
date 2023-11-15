@@ -2,8 +2,12 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import *
 from django.views import generic
+from django.contrib.auth.models import Group
 from .forms import *
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from .decorators import allowed_users
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 # Create your views here.
@@ -12,10 +16,24 @@ def index(request):
     # Render index.html
     return render( request, 'cookBook_app/index.html')
 
-#View that renders the login html for the login request
-def loginPage(request):
-    context = {}
-    return render(request, 'cookBook_app/login.html', context)
+
+@login_required(login_url = 'login')
+@allowed_users(allowed_roles=['user_role'])
+def userPage(request):
+    user_id = request.user.id
+    cook = Users.objects.get(user=user_id)
+    form = UsersForm(instance = cook)
+    print('cook', cook)
+
+    if request.method == 'POST':
+        form = UsersForm(request.POST, request.FILES, instance = cook)
+        if form.is_valid():
+            
+            form.save()
+    
+    context = {'cook':cook,'form':form}
+    return render(request, 'cookBook_app/user.html', context)
+
 
 
 #View that renders the register html for the register request
@@ -25,12 +43,12 @@ def registerPage(request):
     if request.method == 'POST':
         form = CreateUserForm(request.POST)
         if form.is_valid():
-            form.save()
+            user = form.save()
             username = form.cleaned_data.get('username')
-            #group = Group.objects.get(name = 'student')
-            #user.groups.add(group)
-            #cook = Users.objects.create(user)
-            #cook.save()
+            group = Group.objects.get(name = 'user_role')
+            user.groups.add(group)
+            cook = Users.objects.create(user = user,)
+            cook.save()
 
             messages.success(request, 'Account was created for ' + username)
             return redirect('login')
@@ -39,9 +57,9 @@ def registerPage(request):
     return render(request, 'registration/register.html', context)
 
 
-class UsersListView(generic.ListView):
+class UsersListView(LoginRequiredMixin,generic.ListView):
     model = Users
-class UsersDetailView(generic.DetailView):
+class UsersDetailView(LoginRequiredMixin,generic.DetailView):
     model = Users 
     #def get_context_data to send additional variables to template
     def get_context_data(self, **kwargs):
@@ -52,11 +70,14 @@ class UsersDetailView(generic.DetailView):
         return context
 
 
-class RecipeListView(generic.ListView):
+class RecipeListView(LoginRequiredMixin,generic.ListView):
     model = Recipes
-class RecipeDetailView(generic.DetailView):
+class RecipeDetailView(LoginRequiredMixin,generic.DetailView):
     model = Recipes 
 
+
+@login_required(login_url = 'login')
+@allowed_users(allowed_roles=['user_role'])
 def createRecipe(request, user_id):
 
     form = RecipeForm()
@@ -79,6 +100,8 @@ def createRecipe(request, user_id):
     context = {'form': form}
     return render(request, 'cookBook_app/recipes_form.html', context)
 
+@login_required(login_url = 'login')
+@allowed_users(allowed_roles=['user_role'])
 def updateRecipe(request, user_id, id):
     #sets user based on user id of recipe in url
     user = Users.objects.get(pk=user_id)
@@ -109,6 +132,8 @@ def updateRecipe(request, user_id, id):
     #go to recipe_form template with this information
     return render(request, 'cookBook_app/recipes_form.html', context)
 
+@login_required(login_url = 'login')
+@allowed_users(allowed_roles=['user_role'])
 #method to delete a recipe for a user
 def deleteRecipe(request, user_id, id):
 

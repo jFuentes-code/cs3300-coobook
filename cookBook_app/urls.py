@@ -26,8 +26,9 @@ path('users/<int:user_id>/delete_recipe/<int:id>', views.deleteRecipe, name='del
 
 #login/registration urls
 path('accounts/', include('django.contrib.auth.urls')),
-
+#path('user/',views.userPage, name = 'user_page'),
 path('accounts/register/', views.registerPage, name = "register_page"),
+path('accounts/profile/', views.userPage, name = "user_page")
 
 
 
