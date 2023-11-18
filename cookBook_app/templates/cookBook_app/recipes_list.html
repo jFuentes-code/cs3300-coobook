@@ -10,9 +10,11 @@
     
 {% for recipe in recipes_list %}
 <!--list the title of each recipe as a link to their detail page-->
+{% if recipe.public %}
 <li>
 <a href="{{ recipe.get_absolute_url }}">{{ recipe.title }}</a>
 </li>
+{%endif%}
 {% endfor %}
 </ul>
 <!--else display this error message-->
