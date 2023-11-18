@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from django.contrib.auth.models import User 
 
 # Create your models here.
 
@@ -7,6 +8,7 @@ class Users (models.Model):
 
     name = models.CharField(max_length=200)
     email = models.CharField("Email", max_length=200)
+    user = models.OneToOneField(User, null = True, on_delete = models.CASCADE)
 
     #Define default String to return the name for representing the Model object.
     def __str__(self):
