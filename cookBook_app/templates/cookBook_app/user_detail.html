@@ -1,0 +1,46 @@
+{% extends 'cookBook_app/base_template.html' %}
+
+
+{% block content %}
+<!--get the values from the database for this model and format in html-->
+<h1>Name: {{ users.name }}</h1>
+
+<p><strong> Email:</strong> {{ users.email }}</p>
+
+<!--check if the database has entries for this model then iterate through them using for loop-->
+<h2>Recipe List</h2>
+<!--button for creating a new recipe that takes in the users.id-->
+<a class="btn btn-primary" href="{% url 'create_recipe' users.id %}" role="button">New</a>
+
+{% if recipes %}
+<ul>
+    
+{% for recipe in recipes %}
+<!--list the title of each recipe as a link to their detail page-->
+<table>
+    <tr>
+    {{ recipe.title }}:
+    </tr>
+    <br>
+    <tr>
+        <td>
+            <a class="btn btn-primary" href="{{ recipe.get_absolute_url }}" role="button">View</a>
+        </td>
+        <td>
+            <!--creates a update button that sets the url for update_project in urls.py-->
+            <a class="btn btn-primary" href="{% url 'update_recipe' users.id recipe.id%}" role="button">Update</a>
+        </td>
+        <td>
+            <!--creates a delete button that sets the url for delete_project in urls.py-->
+            <a class="btn btn-primary" href="{% url 'delete_recipe' users.id recipe.id%}" role="button">Delete</a>
+        </td>
+    </tr>
+    
+</table>
+{% endfor %}
+</ul>
+<!--else display this error message-->
+{% else %}
+<p>There are no projects registered.</p>
+{% endif %}
+{% endblock %}

@@ -6,12 +6,16 @@ Welcome, {{user}}<br>
 
     <a href="{% url 'user-detail' cook.id%}">My Recipes</a>
 
+
+
 <h3>Account Information</h3>
 
-<form method="POST" action = "" enctype="multipart/form-data">
+<form  method="POST" action = "" enctype="multipart/form-data">
     {% csrf_token%}
     {{form.as_p}}
     <input class = "btn-primary" type="submit" name = "Update">
 </form>
+
+
 
 {% endblock %}
