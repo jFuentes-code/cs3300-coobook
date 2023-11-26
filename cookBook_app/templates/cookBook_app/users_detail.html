@@ -3,7 +3,7 @@
 
 {% block content %}
 <!--get the values from the database for this model and format in html-->
-<h1>User: {{ users.name }}</h1>
+<h1>Chef: {{ users.name }}</h1>
 
 <p><strong> Email:</strong> {{ users.email }}</p>
 
@@ -43,4 +43,31 @@
 {% else %}
 <p>There are no projects registered.</p>
 {% endif %}
+
+<h2>Saved Recipes</h2>
+
+{% if recipe_data %}
+<ul>
+    
+{% for recipe in recipe_data %}
+<!--list the title of each recipe as a link to their detail page-->
+<table>
+    <tr>
+    {{ recipe.title }}:
+    </tr>
+    <br>
+    <tr>
+        <td>
+            <a class="btn btn-primary" href="{{ recipe.get_absolute_url }}" role="button">View</a>
+        </td>
+    </tr>
+    
+</table>
+{% endfor %}
+</ul>
+<!--else display this error message-->
+{% else %}
+<p>There are no saved recipes.</p>
+{% endif %}
+
 {% endblock %}

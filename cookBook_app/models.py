@@ -1,6 +1,9 @@
 from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import User 
+from django.dispatch import receiver
+from guardian.shortcuts import assign_perm
+from django.db.models.signals import post_save
 
 # Create your models here.
 
@@ -34,8 +37,17 @@ class Recipes(models.Model):
     def __str__(self):
         return self.title
     
+    class Meta:
+        permissions = [("saved_recipes","can save recipes")]
+    
     #Returns the URL to access a particular instance of MyModelName.
     #if you define this method then Django will automatically
     # add a "View on Site" button to the model's record editing screens in the Admin site
     def get_absolute_url(self):
         return reverse("recipe-detail",  args=[str(self.id)])
+    
+"""
+@receiver(post_save, sender=Recipes)
+def set_permission(sender, instance, **kwargs):
+    assign_perm("can_change_recipes", instance.user.user, instance)
+"""

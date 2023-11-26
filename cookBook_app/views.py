@@ -8,6 +8,9 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .decorators import allowed_users
 from django.contrib.auth.mixins import LoginRequiredMixin
+from guardian.shortcuts import get_objects_for_user
+from guardian.core import ObjectPermissionChecker
+from django.urls import reverse
 
 
 # Create your views here.
@@ -67,6 +70,10 @@ class UsersDetailView(LoginRequiredMixin,generic.DetailView):
         context = super(UsersDetailView, self).get_context_data(**kwargs)
         # Get recipes that use the current User and add it to the context
         context['recipes'] = Recipes.objects.filter(user=context['users'])
+        context['recipe_data'] = get_objects_for_user(
+            self.request.user, "cookBook_app.saved_recipes", klass = Recipes
+        )
+        print(context['recipe_data'])
         return context
 
 
@@ -74,6 +81,18 @@ class RecipeListView(LoginRequiredMixin,generic.ListView):
     model = Recipes
 class RecipeDetailView(LoginRequiredMixin,generic.DetailView):
     model = Recipes 
+
+
+@login_required(login_url = 'login')
+@allowed_users(allowed_roles=['user_role'])
+def browseDetails(request, recipe_id):
+    #sets the recipe based on the id from the url
+    recipe = Recipes.objects.get(id = recipe_id)
+    checker = ObjectPermissionChecker(request.user)
+    permission = checker.has_perm("saved_recipes", recipe)
+    context = {'recipes': recipe, 'permission':permission}
+    return render(request, 'cookBook_app/browse_details.html', context)
+
 
 
 @login_required(login_url = 'login')

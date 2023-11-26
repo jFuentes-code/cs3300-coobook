@@ -1,0 +1,24 @@
+<!-- inherit from base.html-->
+{% extends 'cookBook_app/base_template.html' %}
+
+
+{% block content %}
+<!--check if the database has entries for this model then iterate through them using for loop-->
+<h1>Recipes List</h1>
+{% if recipes_list %}
+<ul>
+    
+{% for recipe in recipes_list %}
+<!--list the title of each recipe as a link to their detail page-->
+{% if recipe.public %}
+<li>
+<a href="{{ recipe.get_absolute_url }}">{{ recipe.title }}</a>
+</li>
+{%endif%}
+{% endfor %}
+</ul>
+<!--else display this error message-->
+{% else %}
+<p>There are no portfolios registered.</p>
+{% endif %}
+{% endblock %}

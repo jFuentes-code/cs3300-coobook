@@ -14,8 +14,11 @@ path('', views.index, name='index'),
 #Update urls.py to include path to list and detail views
 path('users/', views.UsersListView.as_view(), name= 'users'),
 path('user/<int:pk>', views.UsersDetailView.as_view(), name='user-detail'),
+
 path('recipes/', views.RecipeListView.as_view(), name= 'recipes'),
 path('recipe/<int:pk>', views.RecipeDetailView.as_view(), name='recipe-detail'),
+
+path('recipes/browse/<int:recipe_id>', views.browseDetails, name='browse_details'),
 
 #url for recipe creation that takes in user id
 path('users/<int:user_id>/create_recipe/', views.createRecipe, name='create_recipe'),

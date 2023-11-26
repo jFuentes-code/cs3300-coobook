@@ -1,0 +1,25 @@
+{% extends 'cookBook_app/base_template.html' %}
+
+{% load template_tags %}
+
+
+{% block content %}
+<h1>Recipe Title: {{ recipes.title }}</h1>
+
+
+<p><strong>Cook Time:</strong> {{ recipes.cookTime }}</p>
+<p><strong>Difficulty:</strong> {{ recipes.difficulty }}</p>
+<p><strong>Ingredients:</strong> {{ recipes.ingredients }}</p>
+<p><strong>Recipe:</strong> {{ recipes.recipe }}</p>
+
+
+
+{% if permission %}
+    <p>Recipe has been saved</p>
+
+{% else %}    
+    <a class="btn btn-primary" href="{{request.get_full_path}}" {{ user.id|changeObjPerm:recipes.id }} role="button">Save</a>
+
+{% endif %}
+
+{% endblock %}

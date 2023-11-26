@@ -12,7 +12,7 @@
 <!--list the title of each recipe as a link to their detail page-->
 {% if recipe.public %}
 <li>
-<a href="{{ recipe.get_absolute_url }}">{{ recipe.title }}</a>
+<a href="{% url 'browse_details' recipe.id %}">{{ recipe.title }}</a>
 </li>
 {%endif%}
 {% endfor %}

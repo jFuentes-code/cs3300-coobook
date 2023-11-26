@@ -42,11 +42,13 @@ INSTALLED_APPS = [
     # Add your app name here
     'cookBook_app',
     'bootstrap5',
+    'guardian',
 ]
 
 # Add support for authenticating users
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
+    'guardian.backends.ObjectPermissionBackend',
 ]
 
 MIDDLEWARE = [
