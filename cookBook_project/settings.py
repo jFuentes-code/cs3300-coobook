@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'cookBook_app',
     'bootstrap5',
     'guardian',
+    'selenium'
 ]
 
 # Add support for authenticating users

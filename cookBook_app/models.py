@@ -1,9 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import User 
-from django.dispatch import receiver
-from guardian.shortcuts import assign_perm
-from django.db.models.signals import post_save
+
 
 # Create your models here.
 
@@ -36,7 +34,7 @@ class Recipes(models.Model):
     #Define default String to return the title for representing the Model object.
     def __str__(self):
         return self.title
-    
+    #creates the permission to be given to a user from the object
     class Meta:
         permissions = [("saved_recipes","can save recipes")]
     

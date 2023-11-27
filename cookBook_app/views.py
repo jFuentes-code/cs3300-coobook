@@ -24,6 +24,7 @@ def index(request):
 @allowed_users(allowed_roles=['user_role'])
 def userPage(request):
     user_id = request.user.id
+    print(user_id)
     cook = Users.objects.get(user=user_id)
     form = UsersForm(instance = cook)
     print('cook', cook)
@@ -70,10 +71,12 @@ class UsersDetailView(LoginRequiredMixin,generic.DetailView):
         context = super(UsersDetailView, self).get_context_data(**kwargs)
         # Get recipes that use the current User and add it to the context
         context['recipes'] = Recipes.objects.filter(user=context['users'])
+
+        #Get the recipes that user has saved permissions for
         context['recipe_data'] = get_objects_for_user(
             self.request.user, "cookBook_app.saved_recipes", klass = Recipes
         )
-        print(context['recipe_data'])
+
         return context
 
 
@@ -88,7 +91,9 @@ class RecipeDetailView(LoginRequiredMixin,generic.DetailView):
 def browseDetails(request, recipe_id):
     #sets the recipe based on the id from the url
     recipe = Recipes.objects.get(id = recipe_id)
+    #creates an object permission checker for user
     checker = ObjectPermissionChecker(request.user)
+    
     permission = checker.has_perm("saved_recipes", recipe)
     context = {'recipes': recipe, 'permission':permission}
     return render(request, 'cookBook_app/browse_details.html', context)

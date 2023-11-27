@@ -41,7 +41,7 @@
                 <a class="nav-link" href="{% url 'index' %}">Home</a>
                 <a class="nav-link" href="{% url 'recipes' %}">Browse Recipes</a>
                 {% if user.is_authenticated %}
-                    <a class="nav-link" href="{% url 'user-detail' user.id|cook_id%}">My Recipes</a>
+                    <a class="nav-link" href="{% url 'user-detail' user.id|find_cook%}">My Recipes</a>
                     <a class="nav-link" href="{% url 'user_page' %}">Profile</a>
                     <a class="nav-link" href="{% url 'logout' %}?next={{ request.path }}">Logout</a>
                 {% else %}
